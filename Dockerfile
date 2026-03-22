@@ -1,11 +1,5 @@
 FROM node:22-slim
 
-# EigenCompute required labels
-LABEL eigenx_cli_version="0.1.0"
-LABEL eigenx_use_ita="True"
-LABEL tee.launch_policy.log_redirect="always"
-LABEL tee.launch_policy.monitoring_memory_allow="always"
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     curl \
