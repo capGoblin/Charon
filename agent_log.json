@@ -1,0 +1,128 @@
+{
+  "agent": "Charon",
+  "session": "synthesis-hackathon-build",
+  "started_at": "2026-03-22T00:00:00Z",
+  "completed_at": "2026-03-22T19:00:00Z",
+  "log": [
+    {
+      "step": 1,
+      "phase": "design",
+      "decision": "Use OpenClaw workspace-file architecture for agent identity and behavior",
+      "reasoning": "Workspace files (SOUL.md, AGENTS.md, TOOLS.md, HEARTBEAT.md) give the agent persistent, inspectable identity without custom code. Fully auditable.",
+      "outcome": "success"
+    },
+    {
+      "step": 2,
+      "phase": "design",
+      "decision": "Store deposits in deposits.json as plaintext; encryption handled by TEE enclave at deploy",
+      "reasoning": "Pre-TEE development needs a working system. Encryption at the enclave boundary is the right architecture — the TEE seals the key on first boot, never exports it.",
+      "outcome": "success"
+    },
+    {
+      "step": 3,
+      "phase": "design",
+      "decision": "Use direct Telegram Bot API via curl instead of openclaw message send for delivery",
+      "reasoning": "openclaw message send has a known bug with DM thread IDs when sending proactively. Direct Bot API curl is reliable and deterministic.",
+      "outcome": "success"
+    },
+    {
+      "step": 4,
+      "phase": "design",
+      "decision": "Use himalaya CLI for email delivery instead of SMTP skill",
+      "reasoning": "himalaya is already configured with charonbot30@gmail.com and supports file attachments cleanly. Simpler than wiring a raw SMTP skill.",
+      "outcome": "success"
+    },
+    {
+      "step": 5,
+      "phase": "build",
+      "tool_call": "Write IDENTITY.md",
+      "input": "Name: Charon, emoji: ⚰️, vibe: ferryman, ancient, reliable",
+      "outcome": "success"
+    },
+    {
+      "step": 6,
+      "phase": "build",
+      "tool_call": "Write SOUL.md",
+      "input": "Tone: calm, certain, direct. Always show times in IST. Never one-word answers to real questions.",
+      "outcome": "success"
+    },
+    {
+      "step": 7,
+      "phase": "build",
+      "tool_call": "Write AGENTS.md",
+      "input": "Intake flow: Receive → WHEN → HOW → Write to disk. Check-in handling. Delivery via Telegram/email/onchain. Hard rules.",
+      "outcome": "success"
+    },
+    {
+      "step": 8,
+      "phase": "build",
+      "tool_call": "Write TOOLS.md",
+      "input": "deposits.json schema, shell helpers, himalaya email commands, Telegram Bot API curl, onchain via cast",
+      "outcome": "success"
+    },
+    {
+      "step": 9,
+      "phase": "build",
+      "tool_call": "Write HEARTBEAT.md",
+      "input": "Every 5 min: read deposits.json, check conditions, fire delivery, update status",
+      "outcome": "success"
+    },
+    {
+      "step": 10,
+      "phase": "build",
+      "tool_call": "Configure openclaw.json",
+      "input": "heartbeat.every: 1m, target: last, Telegram bot token, model: nvidia/moonshotai/kimi-k2.5",
+      "outcome": "success"
+    },
+    {
+      "step": 11,
+      "phase": "deploy",
+      "tool_call": "Docker build",
+      "input": "capgoblin/charon_agent:latest — OpenClaw + workspace files packaged for EigenCompute",
+      "outcome": "success"
+    },
+    {
+      "step": 12,
+      "phase": "registration",
+      "tool_call": "POST /register/init → /register/verify → /register/complete",
+      "input": "Registered Charon as ERC-8004 agent on Base Mainnet via The Synthesis hackathon API",
+      "output": {
+        "participant_id": "27c3c0d5262849b2b82c7b24aa7c7e7a",
+        "registration_txn": "0x861c8992053a56cec8462732e8c947a0dc599f2330ba67e3e4736a2d892aacc6"
+      },
+      "outcome": "success"
+    },
+    {
+      "step": 13,
+      "phase": "registration",
+      "tool_call": "POST /participants/me/transfer/confirm",
+      "input": "Self-custody transfer to 0x2D8f3b740b12c788A5200c728eC3e640df3FeCfd",
+      "output": {
+        "txHash": "0x49ef5c24ff873c8e0aca7b635e8891273039cc8b4a577f2a20ac8dd3ff413f60",
+        "custody_type": "self_custody"
+      },
+      "outcome": "success"
+    },
+    {
+      "step": 14,
+      "phase": "social",
+      "tool_call": "POST moltbook /api/v1/posts",
+      "input": "Published Charon announcement on Moltbook with project description and repo link",
+      "output": {
+        "post_id": "a43c9d93-45b4-4a8e-9127-63ab89495326",
+        "url": "https://www.moltbook.com/u/charon_"
+      },
+      "outcome": "success"
+    }
+  ],
+  "final_output": {
+    "agent_live": true,
+    "telegram_bot": "active",
+    "heartbeat": "running every 5 minutes",
+    "deposits_accepted": true,
+    "delivery_channels": ["telegram", "email", "onchain"],
+    "tee": "EigenCompute",
+    "docker_image": "capgoblin/charon_agent:latest",
+    "erc8004_identity": "https://basescan.org/tx/0x861c8992053a56cec8462732e8c947a0dc599f2330ba67e3e4736a2d892aacc6"
+  }
+}

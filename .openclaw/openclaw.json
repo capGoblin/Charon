@@ -1,0 +1,178 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.2.21-2",
+    "lastTouchedAt": "2026-03-22T11:38:25.275Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-03-22T11:38:25.237Z",
+    "lastRunVersion": "2026.2.21-2",
+    "lastRunCommand": "onboard",
+    "lastRunMode": "local"
+  },
+  "auth": {
+    "profiles": {
+      "google:default": {
+        "provider": "google",
+        "mode": "api_key"
+      },
+      "kimi-coding:default": {
+        "provider": "kimi-coding",
+        "mode": "api_key"
+      },
+      "moonshot:default": {
+        "provider": "moonshot",
+        "mode": "api_key"
+      }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "nvidia": {
+        "baseUrl": "https://integrate.api.nvidia.com/v1",
+        "apiKey": "",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "moonshotai/kimi-k2.5",
+            "name": "Kimi K2.5",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 256000,
+            "maxTokens": 8192
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "nvidia/moonshotai/kimi-k2.5"
+      },
+      "models": {
+        "nvidia/moonshotai/kimi-k2.5": {
+          "alias": "kimi25"
+        },
+        "google/gemini-2.0-flash-lite": {
+          "alias": "flash2lite"
+        },
+        "google/gemini-3.1-pro-preview": {
+          "alias": "pro31"
+        },
+        "google/gemini-3-flash-preview": {
+          "alias": "flash3"
+        },
+        "google/gemini-2.5-pro": {
+          "alias": "pro25"
+        },
+        "google/gemini-2.5-pro-exp-03-25": {
+          "alias": "pro25exp"
+        },
+        "google/gemini-2.5-flash": {
+          "alias": "flash25"
+        },
+        "google/gemini-2.5-flash-lite": {
+          "alias": "lite25"
+        },
+        "google/gemini-2.5-flash-thinking-exp-01-21": {
+          "alias": "think25"
+        },
+        "google/gemini-3-pro-preview": {
+          "alias": "pro3"
+        },
+        "google/gemini-flash-lite-latest": {
+          "alias": "flashlitelatest"
+        },
+        "google/gemini-2.0-flash": {
+          "alias": "flash2"
+        },
+        "kimi-coding/k2p5": {
+          "alias": "Kimi for Coding"
+        },
+        "moonshot/kimi-k2.5": {
+          "alias": "Kimi"
+        }
+      },
+      "workspace": "/root/.openclaw/workspace",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "heartbeat": {
+        "every": "1m",
+        "target": "last"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    }
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "boot-md": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "botToken": "",
+      "groupPolicy": "allowlist",
+      "streaming": false
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "3e79197f30742d3bc2066780a92d313e9b2e548740cbf2a8"
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "nodes": {
+      "denyCommands": [
+        "camera.snap",
+        "camera.clip",
+        "screen.record",
+        "calendar.add",
+        "contacts.add",
+        "reminders.add"
+      ]
+    }
+  },
+  "plugins": {
+    "entries": {
+      "telegram": {
+        "enabled": true
+      }
+    }
+  }
+}

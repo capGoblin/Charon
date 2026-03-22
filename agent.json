@@ -1,0 +1,53 @@
+{
+  "name": "Charon",
+  "version": "1.0.0",
+  "description": "An autonomous agent running inside a Trusted Execution Environment that holds secrets and releases them when conditions are met. No one reads what it holds — not the cloud, not the operators, not the agent itself.",
+  "operator_wallet": "0x2D8f3b740b12c788A5200c728eC3e640df3FeCfd",
+  "erc8004": {
+    "participant_id": "27c3c0d5262849b2b82c7b24aa7c7e7a",
+    "registration_txn": "https://basescan.org/tx/0x861c8992053a56cec8462732e8c947a0dc599f2330ba67e3e4736a2d892aacc6",
+    "self_custody_txn": "0x49ef5c24ff873c8e0aca7b635e8891273039cc8b4a577f2a20ac8dd3ff413f60",
+    "chain": "base-mainnet"
+  },
+  "harness": "openclaw",
+  "model": "claude-sonnet-4-6",
+  "compute": {
+    "runtime": "EigenCompute TEE",
+    "docker_image": "capgoblin/charon_agent:latest",
+    "heartbeat_interval": "5m",
+    "max_concurrent_deposits": 100
+  },
+  "supported_tools": [
+    "file_io",
+    "shell_exec",
+    "telegram_bot_api",
+    "himalaya_email",
+    "curl",
+    "uuidgen"
+  ],
+  "task_categories": [
+    "secret_storage",
+    "timed_release",
+    "dead_mans_switch",
+    "autonomous_delivery",
+    "condition_monitoring"
+  ],
+  "delivery_channels": [
+    "telegram",
+    "email",
+    "onchain"
+  ],
+  "trigger_types": [
+    "timer",
+    "dead_mans_switch",
+    "specific_date"
+  ],
+  "autonomy_level": "full",
+  "human_required": false,
+  "safety": {
+    "never_reveals_contents": true,
+    "requires_passphrase_to_cancel": true,
+    "verifies_disk_write_before_confirming": true,
+    "no_partial_writes": true
+  }
+}
