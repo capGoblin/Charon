@@ -150,17 +150,8 @@ Charon: Check-in recorded. ⏳ Your deposit stays sealed.
 
 ## Enclave Guarantee
 
-Every delivery message ends with:
-
-```
----
-Held inside a cryptographically verified enclave.
-EigenCompute attestation: 0x[attestation_hash]
-```
-
-The attestation hash is proof that the exact, unmodified Charon code ran inside a genuine TEE. Anyone can verify it. No one can fake it.
-
-This is the thing no centralized secret-keeping service can offer: **a cryptographic receipt that proves your secret was held honestly.**
+- **Deployment tx**: [`0xe00adc...`](https://sepolia.etherscan.io/tx/0xe00adce5880b4ffaf3569794988feed0a47d467ff25585b7e3e2d93b13d25b80)
+- **EigenCompute app**: [verify-sepolia.eigencloud.xyz/app/0x33cd07...](https://verify-sepolia.eigencloud.xyz/app/0x33cd07fe03d17d257f6e5b5f8cb62f6679629427)
 
 ---
 
@@ -168,48 +159,45 @@ This is the thing no centralized secret-keeping service can offer: **a cryptogra
 
 ### Prerequisites
 
-- [OpenClaw](https://docs.openclaw.ai/install/docker) installed
-- A Telegram bot token (from [@BotFather](https://t.me/BotFather))
-- An API key for your preferred model provider
-- [himalaya](https://github.com/soywod/himalaya) configured (for email delivery)
+- [OpenClaw](https://docs.openclaw.ai/install/docker) installed (Node.js v22+)
+- A Telegram bot token — create one via [@BotFather](https://t.me/BotFather)
+- An LLM API key (Google Gemini or compatible)
+- A Gmail account with an app password (for email delivery)
+- [himalaya](https://github.com/soywod/himalaya) for email
+- [ecloud CLI](https://docs.eigencloud.xyz) for EigenCompute deploy
 
 ### Setup
 
 ```bash
 git clone https://github.com/capGoblin/Charon
 cd Charon
-
-# Copy workspace files to your OpenClaw workspace
-cp workspace/* ~/.openclaw/workspace/
-
-# Configure your tokens in ~/.openclaw/openclaw.json
-# (see openclaw.json.example — never commit real tokens)
-
-# Start the gateway
-openclaw gateway
 ```
 
-### Docker (EigenCompute)
+**1. Configure OpenClaw**
+
+Edit `.openclaw/openclaw.json` — fill in your Telegram bot token and LLM API key.
+
+**2. Configure email**
+
+Edit `himalaya-config.toml` — fill in your Gmail address and app password. or use it, as it is :)
+
+**3. Build and push the Docker image**
 
 ```bash
-docker pull capgoblin/charon_agent:latest
-docker run -d \
-  -e TELEGRAM_BOT_TOKEN=your_token \
-  -e GOOGLE_API_KEY=your_key \
-  -v charon_workspace:/workspace \
-  capgoblin/charon_agent:latest
+docker build --platform linux/amd64 -t yourname/charon_agent:latest .
+docker push yourname/charon_agent:latest
 ```
 
-### Heartbeat
+**4. Deploy to EigenCompute**
 
-Charon checks conditions every 5 minutes via OpenClaw's built-in heartbeat. No cron setup needed — configure in `openclaw.json`:
-
-```json
-"heartbeat": {
-  "every": "5m",
-  "target": "last"
-}
+```bash
+ecloud compute app deploy \
+  --image-ref yourname/charon_agent:latest \
+  --name "Charon" \
+  --description "Verifiable dead drop agent"
 ```
+
+Charon is now running inside a TEE. Message your Telegram bot to begin.
 
 ---
 
