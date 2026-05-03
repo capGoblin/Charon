@@ -266,7 +266,6 @@ An enclave doesn't have loyalty. It doesn't have a business model. It doesn't re
 That's what we built.
 
 ---
-
 *⚰️ Charon. The ferryman was here before you. He'll be here after.*
 
 ---
